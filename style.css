@@ -224,6 +224,9 @@ body {
     --input-add-width: 255px;
     --border-radius-size: 5px;
   }
+  .car-form .add_btn {
+    font-size: 13px;
+  }
   .tooltiptext {
     display: none;
   }
