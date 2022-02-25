@@ -21,8 +21,8 @@ const app = (()=>{
     return {
         add(car){
             if(car !== ''){
-                message = ''
-                cars.push(car)
+                let idx = cars.push(car)-1
+                message = `thêm thành công "${cars[idx]}"`
             }else{
                 message = "Erorr! Bạn chưa nhập tên xe cần thêm"
             }
@@ -33,7 +33,7 @@ const app = (()=>{
                 message = "Erorr! Chỉ còn một xe không thể xóa"
                 this.render()
             }else{
-                message = `xóa thành công ${cars[idx]}`
+                message = `xóa thành công "${cars[idx]}"`
                 cars.splice(idx, 1)
                 this.render()
             }

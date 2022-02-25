@@ -165,6 +165,8 @@ body {
 }
 
 .car-list #message {
+  max-width: 85%;
+  word-wrap: break-word;
   margin-left: 5px;
   font-size: 16px;
   color: red;
@@ -182,6 +184,11 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
+.car p {
+  max-width: 85%;
+  word-wrap: break-word;
 }
 
 .car i {
