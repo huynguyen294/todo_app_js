@@ -11,10 +11,13 @@ const $$ = document.querySelectorAll.bind(document)
 const app = (()=>{
     //sử dụng closure để private data
     const cars = ['Sample Car']
+    const switchOn = document.getElementById('on')
+    const switchOff = document.getElementById('off')
     const carList = $('.car-list')
-    let carForm = $('.car-form')
     const carInput = $('#car-input')
     const bntAdd = $('#add_btn')
+    const html = $('html')
+    let carForm = $('.car-form')
     let btnHidden = $('#hidden-icon')
     let message = ''
 
@@ -48,12 +51,19 @@ const app = (()=>{
         },
         init(){
             this.render()
-            carList.addEventListener('click', (e) => {
-                if(e.target.classList.contains('delete')){
-                    const itemDelete = e.target
-                    this.delete(itemDelete.dataset.index)
-                }
+
+            on.addEventListener('click', ()=>{
+                on.classList.remove('active')
+                off.classList.add('active')
+                html.classList.remove('light')
             })
+
+            off.addEventListener('click', ()=>{
+                off.classList.remove('active')
+                on.classList.add('active')
+                html.classList.add('light')
+            })
+
             bntAdd.addEventListener('click', () => {
                 let active = false
                 carForm.classList.forEach(s => {if(s==='active'){active = true}})
@@ -66,6 +76,13 @@ const app = (()=>{
                 }
                 carForm.classList.add('active')
                 carInput.focus()
+            })
+
+            carList.addEventListener('click', (e) => {
+                if(e.target.classList.contains('delete')){
+                    const itemDelete = e.target
+                    this.delete(itemDelete.dataset.index)
+                }
             })
             
             btnHidden.addEventListener('click', () => {
