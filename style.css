@@ -130,7 +130,8 @@ body {
   color: #fff;
   top: 0;
   left: var(--btn-add-width);
-  padding-left: var(--btn-hidden-width); /*  */
+  padding-left: var(--btn-hidden-width);
+  padding-right: var(--btn-hidden-width); /*  */
   border-radius: var(--border-radius-size);
   width: var(--input-add-width);
 }
