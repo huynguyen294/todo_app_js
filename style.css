@@ -12,7 +12,7 @@
   --btn-hidden-width: 50px;
   --input-add-width: 400px;
   --border-radius-size: 5px;
-  --btn-add-border: 2px #fff solid;
+  --border-add-btn: 1px #000 solid;
 }
 
 * {
@@ -103,6 +103,11 @@ body {
   width: 50%;
 }
 
+.switch_btn:hover .text {
+  display: block;
+  transform: scale(0.95);
+}
+
 .switch_btn .circle {
   position: absolute;
   height: 100%;
@@ -129,7 +134,9 @@ body {
 }
 
 .car-form #hidden-icon {
-  border-radius: var(--border-radius-size);
+  border: 2px #fff solid;
+  border-right: 0;
+  border-radius: var(--border-radius-size) 0 0 var(--border-radius-size);
   width: var(--btn-hidden-width);
   top: 0;
   left: 0;
@@ -143,6 +150,7 @@ body {
 }
 
 .car-form #add_btn {
+  border: 2px #fff solid;
   color: var(--color);
   transition: transform 0.4s ease;
 }
@@ -163,14 +171,19 @@ body {
   top: 0;
   left: 0;
   background-color: var(--border-color);
-  border: 0;
   height: var(--btn-add-height);
   width: var(--btn-add-width);
   cursor: pointer;
 }
 
+.car-form .add_btn:hover span {
+  display: block;
+  transform: scale(1.1);
+}
+
 .car-form.active #add_btn {
-  border-radius: var(--border-radius-size);
+  border-radius: 0 var(--border-radius-size) var(--border-radius-size) 0;
+  border-left: 0;
   transform: translateX(calc(var(--input-add-width) - 50px));
   /* 
   50px ở đây là số thụt lùi khi input sổ ra sao cho
@@ -199,7 +212,6 @@ body {
   color: var(--color);
   border-radius: var(--border-radius-size);
   background-color: var(--border-color);
-  border: 0;
   height: var(--btn-add-height);
   width: var(--btn-add-width);
   padding: 15px;
@@ -212,12 +224,15 @@ body {
 }
 
 .car-form.active .car-input {
+  border-radius: var(--border-radius-size) 0 0 var(--border-radius-size);
+  border: 2px #fff solid;
+  border-left: 0;
+  border-right: 0;
   color: var(--color);
   top: 0;
   left: var(--btn-add-width);
   padding-left: var(--btn-hidden-width);
-  padding-right: var(--btn-hidden-width); /*  */
-  border-radius: var(--border-radius-size);
+  padding-right: var(--btn-hidden-width);
   width: var(--input-add-width);
 }
 
