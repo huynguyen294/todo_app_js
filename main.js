@@ -11,8 +11,7 @@ const $$ = document.querySelectorAll.bind(document)
 const app = (()=>{
     //sử dụng closure để private data
     const cars = ['Sample Car']
-    const switchOn = document.getElementById('on')
-    const switchOff = document.getElementById('off')
+    const switch_btn = $('.switch_btn')
     const carList = $('.car-list')
     const carInput = $('#car-input')
     const bntAdd = $('#add_btn')
@@ -20,6 +19,8 @@ const app = (()=>{
     let carForm = $('.car-form')
     let btnHidden = $('#hidden-icon')
     let message = ''
+
+    console.log(switch_btn)
 
     return {
         add(car){
@@ -52,16 +53,9 @@ const app = (()=>{
         init(){
             this.render()
 
-            on.addEventListener('click', ()=>{
-                on.classList.remove('active')
-                off.classList.add('active')
-                html.classList.remove('light')
-            })
-
-            off.addEventListener('click', ()=>{
-                off.classList.remove('active')
-                on.classList.add('active')
-                html.classList.add('light')
+            switch_btn.addEventListener('click', ()=>{
+                switch_btn.classList.toggle('off')
+                html.classList.toggle('light')
             })
 
             bntAdd.addEventListener('click', () => {
