@@ -169,7 +169,7 @@ body {
   transform: scale(1.5);
 }
 
-.car-form .add_btn {
+.add_btn {
   border-radius: var(--border-radius-size);
   position: absolute;
   top: 0;
@@ -180,7 +180,7 @@ body {
   cursor: pointer;
 }
 
-.car-form .add_btn:hover span {
+.add_btn:hover span {
   display: block;
   transform: scale(1.1);
 }
@@ -247,6 +247,7 @@ body {
 .car-list {
   padding: 10px;
   margin: 0;
+  margin-top: 10px;
   border-radius: var(--border-radius-size);
   width: 100%;
   position: relative;
@@ -357,6 +358,32 @@ body {
   right: -190px;
 }
 
+.all {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.all_btn {
+  padding: 0.8em;
+  color: var(--color);
+  background-color: var(--border-color);
+  border: 0;
+  border-radius: var(--border-radius-size);
+  font-size: 14px;
+  margin-right: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.all_btn:hover {
+  transform: scale(0.98);
+}
+
+.all_btn:nth-of-type(1) {
+  margin-left: 0;
+}
+
 @media (max-width: 46.1875em) {
   :root {
     --btn-add-height: 50px;
@@ -383,5 +410,9 @@ body {
     padding: 1em;
     padding-top: 3em;
     margin: 3em 0 0 0;
+  }
+  .all_btn {
+    padding: 0.7em;
+    font-size: 12px;
   }
 }

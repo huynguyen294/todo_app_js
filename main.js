@@ -24,11 +24,27 @@ const app = (()=>{
     const carInput = $('#car-input')
     const bntAdd = $('#add_btn')
     const html = $('html')
+    const cAll = $('#c-all')
+    const ucAll = $('#uc-all')
+    const dAll = $('#d-all')
     let carForm = $('.car-form')
     let btnHidden = $('#hidden-icon')
     let message = ''
 
     return {
+        handleAdd(){
+            let active = false
+                carForm.classList.forEach(s => {if(s==='active'){active = true}})
+                if(active){
+                    const car = carInput.value
+                    this.add(car)
+
+                    carInput.value = ''
+                    carInput.focus()
+                }
+                carForm.classList.add('active')
+                carInput.focus()
+        },
         add(task){
             if(task !== ''){
                 let idx = tasks.push({todo:task, complete:false})-1
@@ -36,7 +52,6 @@ const app = (()=>{
             }else{
                 message = "Erorr, please enter task!!!"
             }
-            console.log(tasks)
             this.render()
         },
         delete(idx){
@@ -62,6 +77,19 @@ const app = (()=>{
                 const itemComplete = e.target
                 this.handleComplete(itemComplete.dataset.index)
             }
+        },
+        handleCompleteAll(){
+            tasks.forEach(task => task.complete = true)
+            this.render()
+        },
+        handleUnCompleteAll(){
+            tasks.forEach(task => task.complete = false)
+            this.render()
+        },
+        handleDeleteAll(){
+            message = ``
+            tasks.splice(0, tasks.length)
+            this.render()
         },
         checkUnCompleted(){
             let count_unComplete = 0
@@ -150,26 +178,14 @@ const app = (()=>{
                 }
             }).join('')
         },
-        init(){
-            this.render()
-
+        addEvent(){
             switch_btn.addEventListener('click', ()=>{
                 switch_btn.classList.toggle('off')
                 html.classList.toggle('light')
             })
 
             bntAdd.addEventListener('click', () => {
-                let active = false
-                carForm.classList.forEach(s => {if(s==='active'){active = true}})
-                if(active){
-                    const car = carInput.value
-                    this.add(car)
-
-                    carInput.value = ''
-                    carInput.focus()
-                }
-                carForm.classList.add('active')
-                carInput.focus()
+                this.handleAdd()
             })
 
             carList.addEventListener('click', (e) => {
@@ -184,6 +200,21 @@ const app = (()=>{
                 this.handleEnter(ev)
             })
 
+            cAll.addEventListener('click', ()=>{
+                this.handleCompleteAll()
+            })
+
+            ucAll.addEventListener('click', ()=>{
+                this.handleUnCompleteAll()
+            })
+
+            dAll.addEventListener('click', ()=>{
+                this.handleDeleteAll()
+            })
+        },
+        init(){
+            this.render()
+            this.addEvent()
         }
 
     }
