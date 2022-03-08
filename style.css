@@ -5,7 +5,6 @@
   --secondary-color: #24272c;
   --third-color: #494e59;
   --border-color: #ff7a00;
-  --border-sencond-color: #ff9c3e;
   --color: #fff;
   --btn-add-height: 50px;
   --btn-add-width: 100px;
@@ -48,6 +47,10 @@ html.light .container {
 html .container {
   background-color: #24272c;
   transition: all 0.5s ease-in;
+}
+
+html.light .car.yes .complete {
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 body {
@@ -110,9 +113,10 @@ body {
 
 .switch_btn .circle {
   position: absolute;
-  height: 100%;
-  width: 50%;
-  border-radius: 30px;
+  height: 80%;
+  width: 40%;
+  margin: 5%;
+  border-radius: 50%;
   background-color: #fff;
   z-index: 1;
   transition: transform 0.4s ease-in-out;
@@ -124,7 +128,7 @@ body {
 }
 
 .switch_btn.off .circle {
-  transform: translateX(100%);
+  transform: translateX(125%);
   transition: transform 0.4s ease-in-out;
 }
 
@@ -134,7 +138,7 @@ body {
 }
 
 .car-form #hidden-icon {
-  border: 2px #fff solid;
+  border: 0;
   border-right: 0;
   border-radius: var(--border-radius-size) 0 0 var(--border-radius-size);
   width: var(--btn-hidden-width);
@@ -150,7 +154,7 @@ body {
 }
 
 .car-form #add_btn {
-  border: 2px #fff solid;
+  border: 1px var(--border-color);
   color: var(--color);
   transition: transform 0.4s ease;
 }
@@ -209,6 +213,7 @@ body {
 }
 
 .car-form .car-input {
+  border: 0;
   color: var(--color);
   border-radius: var(--border-radius-size);
   background-color: var(--border-color);
@@ -225,7 +230,6 @@ body {
 
 .car-form.active .car-input {
   border-radius: var(--border-radius-size) 0 0 var(--border-radius-size);
-  border: 2px #fff solid;
   border-left: 0;
   border-right: 0;
   color: var(--color);
@@ -286,7 +290,13 @@ body {
   align-items: center;
 }
 
+.car:hover {
+  opacity: 0.8;
+}
+
 .car p {
+  display: inline-flex;
+  align-items: center;
   max-width: 85%;
   word-wrap: break-word;
 }
@@ -294,6 +304,29 @@ body {
 .car i {
   color: var(--color);
   padding: 10px;
+  text-decoration: none;
+}
+
+.car .complete {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  font-size: 24px;
+  margin-right: 10px;
+  z-index: 0;
+}
+
+.car.yes .todo span {
+  text-decoration: line-through;
+}
+
+.car.yes .todo .complete {
+  font-size: 16px;
+  background-color: #ccc;
   text-decoration: none;
 }
 
@@ -314,7 +347,7 @@ body {
   z-index: 100;
 }
 
-.car i:hover {
+.car .delete:hover {
   transform: scale(1.2);
 }
 

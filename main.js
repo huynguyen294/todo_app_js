@@ -1,7 +1,10 @@
 /* 
 yêu cầu ứng dụng:
-Một thẻ input để nhập xe muốn thêm
-Một button add để khi click vào sẽ render list xe bên dưới
+Dark-light mode
+add task
+delete task
+completed task
+
 */
 
 const $ = document.querySelector.bind(document)
@@ -10,7 +13,12 @@ const $$ = document.querySelectorAll.bind(document)
 //sử dụng IIFE để không tạo ra biến toàn cục
 const app = (()=>{
     //sử dụng closure để private data
-    const cars = ['Sample Car']
+    const tasks = [
+        {
+            todo: 'Sample task',
+            complete: true
+        }
+    ]
     const switch_btn = $('.switch_btn')
     const carList = $('.car-list')
     const carInput = $('#car-input')
@@ -20,34 +28,126 @@ const app = (()=>{
     let btnHidden = $('#hidden-icon')
     let message = ''
 
-    console.log(switch_btn)
-
     return {
-        add(car){
-            if(car !== ''){
-                let idx = cars.push(car)-1
-                message = `thêm thành công "${cars[idx]}"`
+        add(task){
+            if(task !== ''){
+                let idx = tasks.push({todo:task, complete:false})-1
+                message = `Add task successfully! - ${tasks[idx].todo}`
             }else{
-                message = "Erorr! Bạn chưa nhập tên xe cần thêm"
+                message = "Erorr, please enter task!!!"
             }
+            console.log(tasks)
             this.render()
         },
         delete(idx){
-            if(cars.length < 2){
-                message = "Erorr! Chỉ còn một xe không thể xóa"
-                this.render()
-            }else{
-                message = `xóa thành công "${cars[idx]}"`
-                cars.splice(idx, 1)
-                this.render()
+            message = `delete successfully - ${tasks[idx].todo}`
+            tasks.splice(idx, 1)
+            this.render()
+        },
+        handleEnter(ev){
+            if(ev.keyCode === 13){
+                const car = carInput.value
+                this.add(car)
+
+                carInput.value = ''
+                carInput.focus()
             }
         },
+        handleTask(e){
+            if(e.target.classList.contains('delete')){
+                const itemDelete = e.target
+                this.delete(itemDelete.dataset.index)
+            }
+            if(e.target.classList.contains('complete')){
+                const itemComplete = e.target
+                this.handleComplete(itemComplete.dataset.index)
+            }
+        },
+        checkUnCompleted(){
+            let count_unComplete = 0
+            tasks.forEach((task, idx) => {
+                if(!task.complete){
+                    count_unComplete++
+                }
+            })
+            if(count_unComplete === 0){
+                return `
+                    <li class="car" style="padding: 10px">
+                    You don't have any tasks here!!
+                    </li>
+                `
+            }else{
+                return ''
+            }
+        },
+        checkCompleted(){
+            let count_complete = 0
+            tasks.forEach((task, idx) => {
+                if(task.complete){
+                    count_complete++
+                }
+            })
+            if(count_complete === 0){
+                return `
+                    <li class="car" style="padding: 10px">
+                    You didn't have completed tasks here!!
+                    </li>
+                `
+            }else{
+                return ''
+            }
+        },
+        handleComplete(idx){
+            if(!tasks[idx].complete){
+                this.completed(idx)
+            }else{
+                this.unCompleted(idx)
+            }
+        },
+        completed(idx){
+            message = `${tasks[idx].todo} completed`
+            tasks[idx].complete = true
+            this.render()
+        },
+        unCompleted(idx){
+            message = ``
+            tasks[idx].complete = false
+            this.render()
+        },
         render(){
-            carList.innerHTML = `<h3 id="message">${message}</h3>` + cars.map((car, idx)=>{
-                return `<li class="car">
-                            <p>${car}</p>
-                            <i class="fas fa-times delete" data-index=${idx}><span class="tooltiptext">click to delete a car</span></i>
+            carList.innerHTML = 
+            `<h3 id="message">${message}</h3>
+            ${this.checkUnCompleted()}`
+            + tasks.map((task, idx)=>{
+                if(!task.complete){
+                    return `
+                        <li class="car">
+                            <p class="todo">
+                            <i class="complete far fa-thin fa-circle" data-index=${idx}></i><span>${task.todo}</span>
+                            </p>
+                            <i class="fas fa-times delete" data-index=${idx}>
+                            <span class="tooltiptext">click to delete task</span>
+                            </i>
+                        </li>
+                        `
+                }
+            }).join('')
+            +
+            `<hr style="background-color: var(--border-color); border: 1px var(--border-color) solid; margin: 20px 0"/>
+            <p>Complete</p>
+            ${this.checkCompleted()}`
+            + tasks.map((task, idx)=>{
+                if(task.complete){
+                    return `
+                        <li class="car ${task.complete?'yes':'no'}">
+                            <p class="todo">
+                            <i class="complete fa fa-solid fa-check" data-index=${idx}></i><span>${task.todo}</span>
+                            </p>
+                            <i class="fas fa-times delete" data-index=${idx}>
+                            <span class="tooltiptext">click to delete task</span>
+                            </i>
                         </li>`
+                }
             }).join('')
         },
         init(){
@@ -73,10 +173,7 @@ const app = (()=>{
             })
 
             carList.addEventListener('click', (e) => {
-                if(e.target.classList.contains('delete')){
-                    const itemDelete = e.target
-                    this.delete(itemDelete.dataset.index)
-                }
+                this.handleTask(e)
             })
             
             btnHidden.addEventListener('click', () => {
@@ -84,14 +181,9 @@ const app = (()=>{
             })
             
             carInput.addEventListener('keyup', (ev) => {
-                if(ev.keyCode === 13){
-                    const car = carInput.value
-                    this.add(car)
-
-                    carInput.value = ''
-                    carInput.focus()
-                }
+                this.handleEnter(ev)
             })
+
         }
 
     }
