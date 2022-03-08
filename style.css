@@ -271,7 +271,8 @@ body {
 
 .car-list #message {
   max-width: 85%;
-  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin-left: 5px;
   font-size: 16px;
   color: red;
@@ -289,6 +290,7 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  transition: opacity 1.5s ease-in-out;
 }
 
 .car:hover {
@@ -296,9 +298,8 @@ body {
 }
 
 .car p {
-  display: inline-flex;
-  align-items: center;
-  max-width: 85%;
+  width: 84%;
+  max-width: 84%;
   word-wrap: break-word;
 }
 
@@ -321,11 +322,15 @@ body {
   z-index: 0;
 }
 
-.car.yes .todo span {
+.car.yes .todo {
   text-decoration: line-through;
 }
 
-.car.yes .todo .complete {
+.car.bluring {
+  opacity: 0;
+}
+
+.car.yes .complete {
   font-size: 16px;
   background-color: #ccc;
   text-decoration: none;
@@ -410,6 +415,20 @@ body {
     padding: 1em;
     padding-top: 3em;
     margin: 3em 0;
+  }
+  .car {
+    font-size: 13px;
+  }
+  .car .complete {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+  .car.yes .complete {
+    font-size: 12px;
+  }
+  .car p {
+    max-width: 70%;
   }
   .all_btn {
     padding: 0.7em;

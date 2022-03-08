@@ -15,8 +15,16 @@ const app = (()=>{
     //sử dụng closure để private data
     const tasks = [
         {
-            todo: 'Sample task',
+            todo: 'Sample do not complete task',
+            complete: false
+        },
+        {
+            todo: 'Sample completed task',
             complete: true
+        },
+        {
+            todo: 'Sample do not complete task',
+            complete: false
         }
     ]
     const switch_btn = $('.switch_btn')
@@ -27,6 +35,7 @@ const app = (()=>{
     const cAll = $('#c-all')
     const ucAll = $('#uc-all')
     const dAll = $('#d-all')
+    const timeBluring = 1500
     let carForm = $('.car-form')
     let btnHidden = $('#hidden-icon')
     let message = ''
@@ -75,21 +84,69 @@ const app = (()=>{
             }
             if(e.target.classList.contains('complete')){
                 const itemComplete = e.target
-                this.handleComplete(itemComplete.dataset.index)
+                this.handleComplete(itemComplete.dataset.index, itemComplete)
             }
         },
         handleCompleteAll(){
             tasks.forEach(task => task.complete = true)
-            this.render()
+            const ListTasks = $$('.car')
+            const iconCompletes = $$('.complete')
+            // xử lí không chạy khi không có task
+            if(ListTasks.length>1 && !ListTasks[0].classList.contains('message')){
+                ListTasks.forEach((task, idx) => {
+                    if(!task.classList.contains('yes') && !task.classList.contains('message')){
+                        iconCompletes[idx].classList.remove('far', 'fa-thin', 'fa-circle')
+                        iconCompletes[idx].classList.add('fa', 'fa-solid','fa-check')
+                        task.classList.add('yes')
+                        task.classList.add('bluring')
+                    }
+                })
+            }
+            setTimeout(()=>{
+                ListTasks.forEach(task => {
+                    if(task.classList.contains('yes')){
+                        task.classList.remove('yes')
+                        task.classList.remove('bluring')
+                    }
+                })
+                this.render()
+            }, timeBluring)
         },
         handleUnCompleteAll(){
             tasks.forEach(task => task.complete = false)
-            this.render()
+            const ListTasksCompleted = $$('.car.yes')
+            // xử lí không chạy khi không có task
+            if(ListTasksCompleted.length>0 && !ListTasksCompleted[0].classList.contains('message')){
+                ListTasksCompleted.forEach((task) => {
+                    if(!task.classList.contains('message')){
+                        task.classList.add('bluring')
+                    }
+                })
+            }
+            setTimeout(()=>{
+                ListTasksCompleted.forEach(task => {
+                        task.classList.remove('bluring')
+                })
+                this.render()
+            }, timeBluring)
         },
         handleDeleteAll(){
             message = ``
             tasks.splice(0, tasks.length)
-            this.render()
+            const ListTasks = $$('.car')
+            // xử lí không chạy khi không có task
+            if(ListTasks.length>0 && !ListTasks[0].classList.contains('message')){
+                ListTasks.forEach((task) => {
+                    task.classList.add('bluring')
+                })
+
+            }
+            setTimeout(()=>{
+                ListTasks.forEach(task => {
+                    task.classList.remove('bluring')
+                })
+                this.render()
+            }, timeBluring)
         },
         checkUnCompleted(){
             let count_unComplete = 0
@@ -100,7 +157,7 @@ const app = (()=>{
             })
             if(count_unComplete === 0){
                 return `
-                    <li class="car" style="padding: 10px">
+                    <li class="car message" style="padding: 10px">
                     You don't have any tasks here!!
                     </li>
                 `
@@ -117,7 +174,7 @@ const app = (()=>{
             })
             if(count_complete === 0){
                 return `
-                    <li class="car" style="padding: 10px">
+                    <li class="car message" style="padding: 10px">
                     You didn't have completed tasks here!!
                     </li>
                 `
@@ -125,17 +182,24 @@ const app = (()=>{
                 return ''
             }
         },
-        handleComplete(idx){
+        handleComplete(idx, itemComplete){
             if(!tasks[idx].complete){
-                this.completed(idx)
+                this.completed(idx, itemComplete)
             }else{
                 this.unCompleted(idx)
             }
         },
-        completed(idx){
+        completed(idx, itemComplete){   
             message = `${tasks[idx].todo} completed`
             tasks[idx].complete = true
-            this.render()
+            itemComplete.classList.remove('far', 'fa-thin', 'fa-circle')
+            itemComplete.classList.add('fa', 'fa-solid','fa-check')
+            itemComplete.parentElement.classList.add('yes')
+            itemComplete.parentElement.classList.add('bluring')
+            setTimeout(()=>{
+                itemComplete.parentElement.classList.remove('bluring')
+                this.render()
+            }, timeBluring)
         },
         unCompleted(idx){
             message = ``
@@ -150,9 +214,8 @@ const app = (()=>{
                 if(!task.complete){
                     return `
                         <li class="car">
-                            <p class="todo">
-                            <i class="complete far fa-thin fa-circle" data-index=${idx}></i><span>${task.todo}</span>
-                            </p>
+                            <i class="complete far fa-thin fa-circle" data-index=${idx}></i>
+                            <p class="todo">${task.todo}</p>
                             <i class="fas fa-times delete" data-index=${idx}>
                             <span class="tooltiptext">click to delete task</span>
                             </i>
@@ -167,9 +230,10 @@ const app = (()=>{
             + tasks.map((task, idx)=>{
                 if(task.complete){
                     return `
-                        <li class="car ${task.complete?'yes':'no'}">
+                        <li class="car yes">
+                            <i class="complete fa fa-solid fa-check" data-index=${idx}></i>    
                             <p class="todo">
-                            <i class="complete fa fa-solid fa-check" data-index=${idx}></i><span>${task.todo}</span>
+                            ${task.todo}
                             </p>
                             <i class="fas fa-times delete" data-index=${idx}>
                             <span class="tooltiptext">click to delete task</span>
