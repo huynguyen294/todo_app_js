@@ -135,7 +135,7 @@ const app = (()=>{
             tasks.splice(0, tasks.length)
             const ListTasks = $$('.car')
             // xử lí không chạy khi không có task
-            if(ListTasks.length>0 && !ListTasks[0].classList.contains('message')){
+            if(ListTasks.length>0 && !ListTasks[1].classList.contains('message')){
                 ListTasks.forEach((task) => {
                     task.classList.add('bluring')
                 })
