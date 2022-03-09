@@ -63,10 +63,17 @@ const app = (()=>{
             }
             this.render()
         },
-        delete(idx){
+        delete(idx, iconDelelte){
             message = `delete successfully - ${tasks[idx].todo}`
             tasks.splice(idx, 1)
-            this.render()
+            iconDelelte.classList.remove('far', 'fa-thin', 'fa-circle')
+            iconDelelte.classList.add('fa', 'fa-solid','fa-check')
+            iconDelelte.parentElement.classList.add('yes')
+            iconDelelte.parentElement.classList.add('bluring')
+            setTimeout(()=>{
+                iconDelelte.parentElement.classList.remove('bluring')
+                this.render()
+            }, timeBluring)
         },
         handleEnter(ev){
             if(ev.keyCode === 13){
@@ -80,7 +87,7 @@ const app = (()=>{
         handleTask(e){
             if(e.target.classList.contains('delete')){
                 const itemDelete = e.target
-                this.delete(itemDelete.dataset.index)
+                this.delete(itemDelete.dataset.index, itemDelete)
             }
             if(e.target.classList.contains('complete')){
                 const itemComplete = e.target
